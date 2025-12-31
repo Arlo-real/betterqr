@@ -1,0 +1,31 @@
+{
+  "name": "reverseqr",
+  "version": "1.0.0",
+  "description": "Secure file and text sharing via QR codes",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "NODE_ENV=development node src/server.js"
+  },
+  "keywords": [
+    "qr",
+    "encryption",
+    "file-sharing",
+    "diffie-hellman"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "dotenv": "^16.6.1",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "express-rate-limit": "^8.2.1",
+    "multer": "^1.4.5-lts.1",
+    "qrcode": "^1.5.3",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

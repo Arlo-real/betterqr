@@ -1,0 +1,41 @@
+/* Info Pages Shared Styles */
+
+.info-container {
+  text-align: left;
+  margin-top: 30px;
+  line-height: 1.8;
+}
+
+.info-section {
+  margin-bottom: 30px;
+}
+
+.info-section h2 {
+  margin-bottom: 25px;
+  color: var(--text-primary);
+  margin-top: 40px;
+}
+
+.info-section h2:first-of-type {
+  margin-top: 0;
+}
+
+.info-item {
+  margin-bottom: 30px;
+}
+
+.info-item h3 {
+  margin: 0 0 10px;
+  color: var(--text-primary);
+}
+
+.info-item p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.info-item .btn {
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+}

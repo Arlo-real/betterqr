@@ -1,0 +1,49 @@
+# ReverseQR systemd service file
+# Installation:
+#   sudo cp reverseqr.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable reverseqr
+#   sudo systemctl start reverseqr
+#
+# Management:
+#   sudo systemctl status reverseqr
+#   sudo systemctl restart reverseqr
+#   sudo journalctl -u reverseqr -f
+
+[Unit]
+Description=ReverseQR - Secure File Sharing Server
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/home/armand/Documents/reverseqr
+
+# Environment variables
+Environment="PORT=3000"
+Environment="NODE_ENV=production"
+Environment="BASE_URL=https://yourdomain.com"
+EnvironmentFile=-/home/armand/Documents/reverseqr/.env
+
+# Start command
+ExecStart=/usr/bin/node /home/armand/Documents/reverseqr/src/server.js
+
+# Restart policy
+Restart=on-failure
+RestartSec=10
+
+# Process management
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=reverseqr
+
+# Security settings
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/home/armand/Documents/reverseqr/public/uploads
+ReadWritePaths=/home/armand/Documents/reverseqr/logs
+
+[Install]
+WantedBy=multi-user.target

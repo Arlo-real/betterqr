@@ -1,7 +1,7 @@
-# ReverseQR - Secure File & Text Sharing
+# BetterQR - Secure File & Text Sharing
 
 A web application for sharing files and text between two devices without account or previous contact.
-Try it [here](https://reverseqr.qzz.io/) (uptime not guaranteed)
+Try it [here](https://betterqr.qzz.io/) (uptime not guaranteed)
 
 ## Why I did this
 When I use a PC I do not trust (like a school PC with an outdated version of Windows and a disabled antivirus (for some reason I still have not figured out)), I do not want to plug in any USB stick or open my password manager, which is problematic since my passwords are 10+ characters long and randomly generated. I often resolve to typing them by hand, which is annoying.
@@ -19,7 +19,7 @@ Now, I can simply open up this website and scan the QR code to transfer anything
 - All data deleted shortly after upload (30 min by default)
 
 ### Easy use: two ways of transmitting the connection code
-- **QR Code**: Receiver displays QR code, sender scans it
+- **QR Code**: Sender displays QR code, receiver scans it
 - **Human-Readable Codes**: PGP wordlist encoding for easy verbal transmission
 
 ### A simple but powerful tool:
@@ -36,16 +36,15 @@ Now, I can simply open up this website and scan the QR code to transfer anything
 
 ## How to use?
 
-**For Receiver:**
-1. Open http://localhost:3000/
-2. Share the QR code or PGP-encoded connection code with sender
-3. Files/messages appear automatically when sent
-
 **For Sender:**
-1. Scan QR code or open /sender page and enter connection code
-2. Type message and/or upload files
-3. Click "Send Securely"
-4. Receiver gets the messages
+1. Open http://localhost:3000/
+2. Share the QR code or PGP-encoded connection code with receiver
+3. Once receiver connects, enter text and/or upload files
+4. Click "Send Securely"
+
+**For Receiver:**
+1. Scan QR code or open /receiver page and enter connection code
+2. Files/messages appear automatically when sent
 
 
 
@@ -70,7 +69,7 @@ Now, I can simply open up this website and scan the QR code to transfer anything
 ### Quick Start (for testing with localhost)
 
 > [!IMPORTANT]
-> Reverseqr uses the crypto.sublte in the browser, which is only available in a secure context (localhost or https) therefore, the whole app will not work correctly if this is not the case (for example when testing using a second device on the same network).
+> BetterQR uses the crypto.subtle in the browser, which is only available in a secure context (localhost or https) therefore, the whole app will not work correctly if this is not the case (for example when testing using a second device on the same network).
 In such conditions, the page will load, but not display any QR code or connection code and not permit any data transfer. This however indicates that the server is working fine.
 [More info](https://developer.mozilla.org/en-US/docs/Web/API/Crypto/subtle)
 
@@ -78,7 +77,7 @@ In such conditions, the page will load, but not display any QR code or connectio
 
 1. **Clone and navigate to project:**
 ```bash
-cd reverseqr/
+cd betterqr/
 ```
 
 2. **Install dependencies:**
@@ -92,8 +91,8 @@ npm start
 ```
 
 4. **Access the application:**
-- Receiver: http://localhost:3000 (by default)
-- Sender: http://localhost:3000/sender (by default)
+- Sender: http://localhost:3000 (by default)
+- Receiver: http://localhost:3000/receiver (by default)
 
 
 
@@ -134,7 +133,7 @@ pm2 status
 
 ### View Logs
 ```bash
-pm2 logs reverseqr
+pm2 logs betterqr
 ```
 
 ### Monitor Resources
@@ -158,7 +157,7 @@ Contributions are welcome! Please feel free to submit issues or pull requests.
 
 For issues or questions:
 1. Check the SETUP.md for deployment details
-2. Review server logs with `pm2 logs reverseqr`
+2. Review server logs with `pm2 logs betterqr`
 3. Test connectivity with `/health` endpoint
 
 

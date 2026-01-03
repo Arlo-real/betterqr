@@ -60,6 +60,121 @@ h1 {
   font-weight: 500;
 }
 
+/* QR Section */
+.qr-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+#qrCode {
+  max-width: 300px;
+  margin: 0 auto 20px;
+  display: block;
+  padding: 16px;
+  background: var(--bg-light);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Code Display */
+.code-display {
+  background: var(--bg-light);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.code-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+#qrUrl {
+  word-break: break-all;
+  padding: 10px;
+  background: white;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 11px;
+  margin-bottom: 15px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  line-height: 1.4;
+}
+
+.pgp-code {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: var(--text-primary);
+  word-break: break-all;
+  line-height: 1.6;
+  padding: 12px;
+  background: white;
+  border-radius: 6px;
+  user-select: all;
+  border: 1px solid var(--border-color);
+}
+
+/* Copy Button */
+.copy-button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+  width: 100%;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.copy-button:active {
+  transform: translateY(0);
+}
+
+/* Key Hash Display */
+.key-hash-display {
+  background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid var(--primary);
+  color: var(--text-primary);
+  font-size: 13px;
+  text-align: center;
+  display: none;
+  animation: slideDown 0.3s ease;
+}
+
+.key-words {
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  display: block;
+  margin-top: 12px;
+  color: var(--primary);
+  word-spacing: 10px;
+}
+
 /* Sections */
 .section-title {
   font-size: 14px;
@@ -328,8 +443,6 @@ textarea:focus {
 /* Message Section */
 .message-section {
   margin-top: 32px;
-  padding-top: 32px;
-  border-top: 1px solid var(--border-color);
   display: none;
 }
 
@@ -403,7 +516,6 @@ textarea:focus {
 .status {
   text-align: center;
   margin: 30px 0;
-  display: none;
 }
 
 .status p {

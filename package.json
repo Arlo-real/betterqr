@@ -1,5 +1,5 @@
 {
-  "name": "reverseqr",
+  "name": "betterqr",
   "version": "1.0.0",
   "description": "Secure file and text sharing via QR codes",
   "main": "src/server.js",

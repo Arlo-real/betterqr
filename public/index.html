@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ReverseQR - Receiver</title>
+  <title>BetterQR - Send</title>
   <link rel="icon" type="image/png" href="rQR.png">
-  <link rel="stylesheet" href="styles/receiver-styles.css">
+  <link rel="stylesheet" href="styles/sender-styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>ReverseQR</h1>
-    <p class="subtitle">Secure File & Text Sharing</p>
+    <h1>BetterQR</h1>
+    <p class="subtitle">Secure File & Text Sharing - Send Mode</p>
 
     <div id="error" class="error" style="display: none;"></div>
+    <div id="success" class="success"></div>
 
     <div class="qr-section">
       <img id="qrCode" alt="QR Code" style="max-width: 300px; padding: 15px; background: #f8f8f8; border-radius: 10px; display: block; margin: 0 auto 20px;" />
@@ -21,7 +22,7 @@
         <div class="code-label">QR URL:</div>
         <div id="qrUrl" style="word-break: break-all; padding: 10px; background: #f0f0f0; border-radius: 5px; font-family: monospace; font-size: 12px; margin-bottom: 15px; color: #666;">Loading...</div>
         
-        <div class="code-label">Share this code:</div>
+        <div class="code-label">Share this code with the receiver:</div>
         <div class="pgp-code" id="pgpCode">Loading...</div>
         <button class="copy-button" id="copyCodeBtn">Copy Code</button>
       </div>
@@ -30,15 +31,38 @@
     <div id="keyHashDisplay" class="key-hash-display" style="display: none;"></div>
 
     <div class="status">
-      <p>Waiting for sender to scan QR code...</p>
+      <p>Waiting for receiver to scan QR code...</p>
       <div class="spinner"></div>
       <div class="spinner"></div>
       <div class="spinner"></div>
     </div>
 
-    <div id="messagesSection" class="messages-section" style="display: none;">
-      <div class="messages-title">Received Messages</div>
-      <div id="messagesList"></div>
+    <div id="messageSection" class="message-section" style="display: block;">
+      <div class="section-title">
+        <span id="maxSizeInfo"></span>
+      </div>
+
+      <div>
+        <label class="section-title">Text Message</label>
+        <textarea id="textInput" class="text-input" placeholder="Enter your message (or skip if you only want to upload files)"></textarea>
+      </div>
+
+      <div>
+        <label class="section-title">Upload Files</label>
+        <div class="file-upload" id="fileUploadArea">
+          <input type="file" id="fileInput" multiple />
+          <label class="file-upload-label">
+            Click to browse or drag & drop files here
+          </label>
+        </div>
+        <div id="filesList" class="files-list"></div>
+      </div>
+
+      <button class="btn send-button" id="sendBtn" disabled>
+        Waiting for receiver...
+      </button>
+      <br><br><br>
+      <div id="messagesList" class="messages-list" style="margin-top: 30px;"></div>
     </div>
 
   </div>
@@ -52,9 +76,9 @@
       <span class="separator">•</span>
       <a href="/faq.html">FAQ</a>
       <span class="separator">•</span>
-      <a href="https://github.com/Arlo-real/reverseqr" target="_blank">View source code on github</a>
+      <a href="https://github.com/Arlo-real/betterqr" target="_blank">View source code on github</a>
   </footer>
 
-  <script src="receiver-script.js"></script>
+  <script src="sender-script.js"></script>
 </body>
 </html>

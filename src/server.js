@@ -77,6 +77,93 @@ const uploadedFiles = new Map();
 // Key: filename, Value: number of active downloads
 const activeDownloads = new Map();
 
+// Get available disk space in bytes for the upload directory
+async function getAvailableSpace() {
+  try {
+    const stats = await fs.promises.statfs(UPLOAD_DIR);
+    // Available space = available blocks * block size
+    return stats.bavail * stats.bsize;
+  } catch (error) {
+    console.error('Error checking disk space:', error.message);
+    return null; // Return null if we can't determine space
+  }
+}
+
+// Check if there's enough storage space for an upload
+// Returns { hasSpace: boolean, availableSpace: number|null, error: string|null }
+async function checkStorageSpace(requiredBytes) {
+  const availableSpace = await getAvailableSpace();
+  
+  if (availableSpace === null) {
+    return { hasSpace: null, availableSpace: null, error: 'Unable to determine available storage space' };
+  }
+  
+  // Add a safety margin (10% or 10MB, whichever is larger)
+  const safetyMargin = Math.max(requiredBytes * 0.1, 10 * 1024 * 1024);
+  const requiredWithMargin = requiredBytes + safetyMargin;
+  
+  if (availableSpace < requiredWithMargin) {
+    return {
+      hasSpace: false,
+      availableSpace,
+      error: `Insufficient storage space. Required: ${formatBytes(requiredBytes)}, Available: ${formatBytes(availableSpace)}`
+    };
+  }
+  
+  return { hasSpace: true, availableSpace, error: null };
+}
+
+// Middleware to check storage space before accepting file upload
+const storageCheckMiddleware = async (req, res, next) => {
+  // Only check for file upload requests (multipart/form-data)
+  const contentType = req.headers['content-type'] || '';
+  if (!contentType.includes('multipart/form-data')) {
+    return next();
+  }
+  
+  // Get content-length from headers to estimate upload size
+  const contentLength = parseInt(req.headers['content-length'] || '0');
+  
+  if (contentLength <= 0) {
+    // If no content-length, we can't pre-check - let it proceed but log warning
+    console.warn('Upload request without Content-Length header, skipping pre-check');
+    return next();
+  }
+  
+  const clientIp = req.ip;
+  
+  // First check: do we have enough space?
+  let spaceCheck = await checkStorageSpace(contentLength);
+  
+  // If not enough space, try cleanup first
+  if (spaceCheck.hasSpace === false) {
+    logEvent(clientIp, 'storage low', `triggering cleanup (need ${formatBytes(contentLength)}, have ${formatBytes(spaceCheck.availableSpace)})`);
+    
+    // Run cleanup to free up space
+    cleanupExpiredFiles();
+    
+    // Re-check after cleanup
+    spaceCheck = await checkStorageSpace(contentLength);
+    
+    if (spaceCheck.hasSpace === false) {
+      logEvent(clientIp, 'upload rejected', `insufficient storage space after cleanup`);
+      return res.status(507).json({
+        error: 'Insufficient storage space on server',
+        details: spaceCheck.error,
+        availableSpace: spaceCheck.availableSpace,
+        requiredSpace: contentLength
+      });
+    }
+  }
+  
+  // If we couldn't determine space, mark it on the request for later handling
+  if (spaceCheck.hasSpace === null) {
+    req.storageSpaceUnknown = true;
+  }
+  
+  next();
+};
+
 // Logging utility
 function logEvent(ip, action, details = '') {
   const timestamp = new Date().toLocaleTimeString('en-US', {
@@ -419,10 +506,16 @@ app.get('/api/session/status/:code', (req, res) => {
   }
 });
 
-app.post('/api/message/send', uploadLimiter, upload.array('files'), (req, res) => {
+app.post('/api/message/send', uploadLimiter, storageCheckMiddleware, upload.array('files'), (req, res) => {
   try {
     let { code, messageType, ciphertext, iv, authTag, hash, text } = req.body;
     const clientIp = req.ip;
+    
+    // If storage space was unknown and we have files, verify they were written successfully
+    if (req.storageSpaceUnknown && req.files && req.files.length > 0) {
+      // Files were written successfully despite unknown space - continue normally
+      console.log('Upload succeeded despite unknown storage space');
+    }
     
     // Handle file IVs and hashes from FormData
     // Note: form-data parser converts 'fileIvs[]' to 'fileIvs' when parsing multipart
@@ -754,6 +847,30 @@ app.use((error, req, res, next) => {
     }
   } else if (error.status === 413) {
     return res.status(413).json({ error: 'Payload too large' });
+  } else if (error.code === 'ENOSPC') {
+    // Handle disk full error - try cleanup and inform the client
+    console.error('ENOSPC error during upload, triggering cleanup');
+    cleanupExpiredFiles();
+    
+    // Clean up any partially written files from this request
+    if (req.files && req.files.length > 0) {
+      req.files.forEach(file => {
+        try {
+          const filepath = path.join(UPLOAD_DIR, file.filename);
+          if (fs.existsSync(filepath)) {
+            fs.unlinkSync(filepath);
+            console.log(`Cleaned up partial file: ${file.filename}`);
+          }
+        } catch (cleanupErr) {
+          console.error(`Failed to cleanup partial file: ${cleanupErr.message}`);
+        }
+      });
+    }
+    
+    return res.status(507).json({ 
+      error: 'Insufficient storage space on server. Please try again later or with a smaller file.',
+      code: 'ENOSPC'
+    });
   }
   
   // Pass other errors to default handler

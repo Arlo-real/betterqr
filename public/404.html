@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReverseQR - 404 Not Found</title>
+  <link rel="icon" type="image/png" href="/rQR.png">
+  <link rel="stylesheet" href="/styles/receiver-styles.css">
+  <style>
+    .error-container {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .error-image {
+      max-width: 400px;
+      width: 100%;
+      margin: 20px auto;
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+    }
+    .error-code {
+      font-size: 72px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+    .error-message {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+    }
+    .home-button {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 12px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .home-button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="error-container">
+      <div class="error-code">404</div>
+      <p class="error-message">The page you're looking for doesn't exist.</p>
+      <img id="errorImage" class="error-image" alt="404 Not Found" src="">
+      <br><br>
+      <a href="/" class="home-button">Go Home</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <a href="/cookies.html">No cookie banner?</a>
+    <span class="separator">•</span>
+    <a href="/legal.html">Legal Disclaimer</a>
+    <span class="separator">•</span>
+    <a href="/privacy.html">Privacy Policy</a>
+    <span class="separator">•</span>
+    <a href="/faq.html">FAQ</a>
+  </footer>
+
+  <script>
+    async function loadRandomImage() {
+      const img = document.getElementById('errorImage');
+      
+      try {
+        const response = await fetch('/api/404-images');
+        const data = await response.json();
+        
+        if (data.images && data.images.length > 0) {
+          const randomImage = data.images[Math.floor(Math.random() * data.images.length)];
+          img.src = `/404/${encodeURIComponent(randomImage)}`;
+        } else {
+          // Fallback if no images found
+          img.style.display = 'none';
+        }
+      } catch (e) {
+        console.error('Failed to load 404 images:', e);
+        img.style.display = 'none';
+      }
+    }
+    
+    loadRandomImage();
+  </script>
+</body>
+</html>

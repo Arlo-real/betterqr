@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReverseQR - FAQ</title>
+  <link rel="icon" type="image/png" href="rQR.png">
+  <link rel="stylesheet" href="styles/receiver-styles.css">
+  <link rel="stylesheet" href="styles/info-pages.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Frequently Asked Questions</h1>
+    <p class="subtitle">ReverseQR</p>
+
+    <div class="info-container">
+      <section class="info-section">
+        <h2>General Questions</h2>
+
+        <div class="info-item">
+          <h3>What even is this?</h3>
+          <p>
+            ReverseQR is a secure, end-to-end encrypted file and message sharing service. It allows you to securely share files and text with others without creating accounts or storing data on cloud platforms.
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>Why did you do this?</h3>
+          <p>
+            When I use a PC I do not trust (like a school PC with an outdated version of Windows and a disabled antivirus (for some reason I still have not figured out)), I do not want to plug in any USB stick or open my password manager, which is problematic since my passwords are 10+ characters long and randomly generated. I often resolve to typing them by hand, which is annoying.
+            Now, I can simply open up this website and scan the QR code to transfer anything from my phone to the PC.
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>Is my data really private?</h3>
+          <p>
+            Yes. All messages and files are encrypted in your browser before being sent to our server. Only the intended recipient's browser can decrypt them. We never have access to your encryption keys or plaintext content.
+          </p>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <h2>Getting Started</h2>
+
+        <div class="info-item">
+          <h3>How do I send a file? (step by step guide)</h3>
+          <p>
+            1. Click "Send" on the home page<br>
+            2. You'll receive a 3-word code and a QR code<br>
+            3. Share the words with your recipient or have them scan the QR code<br>
+            4. (If using the 3-word code) The recipient opens the /receiver page and enters the words to connect<br>
+            5. Both parties verify the Security Fingerprint matches (if it does not, there is probably a man-in-the-middle attack going on: DO NOT SEND ANYTHING EVEN REMOTELY PRIVATE!)<br>
+            6. Once they connect, they select files to send or text<br>
+          </p>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <h2>Sessions & Data</h2>
+
+        <div class="info-item">
+          <h3>How long does my session last?</h3>
+          <p>
+            Sessions automatically expire after <span id="sessionTimeout">15</span> minutes of inactivity. This helps protect your privacy by limiting the time your session remains active.
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>How long are files stored?</h3>
+          <p>
+            Files are automatically deleted after <span id="fileRetention">30</span> minutes, regardless of whether they were downloaded or not. This ensures your shared data doesn't persist on our servers.
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>But my connection is slow and I need more than 30 minutes to download the files.</h3>
+          <p>
+            Don't worry, we didn't say the whole truth in the question above. If a file is currently being downloaded, the server will keep it available until the download is complete, even if that goes beyond the standard retention period.
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>What happens if the recipient goes offline?</h3>
+          <p>
+            If the recipient reconnects to the session before it expires, the shared files and messages will have persisted on the server and will be available for download, Else, the receiver will need to create a new session and share a new code.
+          </p>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <h2>Technical Questions</h2>
+
+        <div class="info-item">
+          <h3>What's the maximum file size?</h3>
+          <p>
+            Maximum file size is <span id="maxFileSize">100 MB</span>. This limit depends on server configuration.
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>What's the maximum message size?</h3>
+          <p>
+            Maximum text message size is <span id="maxMessageSize">1 GB</span>. This allows for very large messages while maintaining performance.
+          </p>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <h2>Security & Privacy</h2>
+
+        <div class="info-item">
+          <h3>Can the server admin see my files?</h3>
+          <p>
+            No. All encryption and decryption happens in your browser. The server only stores encrypted data and has no access to your encryption keys. Even the server administrator cannot read your files.
+            However, a malicious server operator could send a different webpage that does not encrypt the data, so only trust this service as much as its host.
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>What data do you log?</h3>
+          <p>
+            We log IP addresses, timestamps and file size for limited time for statistics and abuse prevention.
+          </p>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <h2>Troubleshooting</h2>
+
+        <div class="info-item">
+          <h3>There is no QR code nor 3-word code</h3>
+          <p>
+            You are probably not using HTTPS, which is required by WebCrypto, the API that encrypts your data. Make sure the URL starts with "https://".
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>I can't scan the QR code</h3>
+          <p>
+            Use the 3-word code to connect.
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>Files won't download</h3>
+          <p>
+            Make sure the session hasn't expired. If you're downloading large files, the process may take a while since they first have to be decrypted.
+          </p>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <h2>More info (nerd stuff)</h2>
+
+        <div class="info-item">
+          <h3>How much RAM is needed?</h3>
+          <p>
+            Unfortunately, you need about 3x the size of the files you want to send in free RAM. This is because files are cached, base64-encoded and encrypted in memory before being sent. The same applies for receiving files, which need to be downloaded, decrypted and decoded in memory before being saved.
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>How does the encryption work?</h3>
+          <p>
+            ReverseQR uses ECDH (Elliptic Curve Diffie-Hellman) for secure key exchange and AES-256-GCM for encrypting your messages and files. Your encryption keys never leave your browser—the server cannot decrypt your content.
+            However, a malicious server operator could send a different webpage that does not encrypt the data, so only trust this service as much as its host.
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>But why use Diffie-Hellman? It is not quantum proof and the encryption key could be included in the QR code.</h3>
+          <p>
+            Yes, this is true. However the connection code also needs to be transmitted manually (for example copied from one PC to another), therefore the 3-word code exists to link both devices. Good luck copying a 256-bit key manually.
+          </p>
+        </div>
+
+        <div class="info-item">
+          <h3>What's the Security Fingerprint?</h3>
+          <p>
+            The Security Fingerprint is a 3-word combination derived from the shared secret key established during the connection. If it does not match, the connection is likely compromised.
+          </p>
+        </div>
+
+        <a href="/" class="btn">← Back</a>
+      </section>
+    </div>
+  </div>
+
+  <footer class="footer">
+      <a href="/cookies.html">No cookie banner?</a>
+      <span class="separator">•</span>
+      <a href="/legal.html">Legal Disclaimer</a>
+      <span class="separator">•</span>
+      <a href="/privacy.html">Privacy Policy</a>
+      <span class="separator">•</span>
+      <a href="/faq.html">FAQ</a>
+      <span class="separator">•</span>
+      <a href="https://github.com/Arlo-real/reverseqr" target="_blank">View source code on github</a>
+  </footer>
+
+  <script src="scripts/faq.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReverseQR - Sender</title>
+  <link rel="icon" type="image/png" href="rQR.png">
+  <link rel="stylesheet" href="styles/sender-styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>ReverseQR</h1>
+    <p class="subtitle">Secure File & Text Sharing - Sender Mode</p>
+
+    <div id="error" class="error"></div>
+    <div id="success" class="success"></div>
+
+    <div id="codeInputSection" class="code-input-section">
+      <div class="section-title">Step 1: Connect</div>
+      <div class="input-group">
+        <input type="text" id="codeInput" placeholder="Enter connection code or paste PGP words" />
+        <button class="btn" id="connectBtn">Connect</button>
+      </div>
+      <div id="connectionStatus" class="connection-status" style="display: none;">
+        <span>Establishing secure connection...</span>
+      </div>
+    </div>
+
+    <div id="messageSection" class="message-section" style="display: none;">
+      <div class="section-title">
+        <span id="maxSizeInfo">
+        </span>
+      </div>
+
+      <div>
+        <label class="section-title">Text Message</label>
+        <textarea id="textInput" class="text-input" placeholder="Enter your message (or skip if you only want to upload files)"></textarea>
+      </div>
+
+      <div>
+        <label class="section-title">Upload Files </label>
+        <div class="file-upload" id="fileUploadArea">
+          <input type="file" id="fileInput" multiple />
+          <label class="file-upload-label">
+            Click to browse or drag & drop files here
+          </label>
+        </div>
+        <div id="filesList" class="files-list"></div>
+      </div>
+
+      <button class="btn send-button" id="sendBtn">
+        Send Securely
+      </button>
+    </br>
+    </br> <!-- go brrrrrrrr -->
+    </br>
+      <div id="keyHashDisplay" class="key-hash-display" style="display: none;"></div>
+
+      <div id="messagesList" class="messages-list" style="margin-top: 30px;"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+      <a href="/cookies.html">No cookie banner?</a>
+      <span class="separator">•</span>
+      <a href="/legal.html">Legal Disclaimer</a>
+      <span class="separator">•</span>
+      <a href="/privacy.html">Privacy Policy</a>
+      <span class="separator">•</span>
+      <a href="/faq.html">FAQ</a>
+      <span class="separator">•</span>
+      <a href="https://github.com/Arlo-real/reverseqr" target="_blank">View source code on github</a>
+  </footer>
+
+  <script src="sender-script.js"></script>
+</body>
+</html>

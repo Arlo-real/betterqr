@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReverseQR - Receiver</title>
+  <link rel="icon" type="image/png" href="rQR.png">
+  <link rel="stylesheet" href="styles/receiver-styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>ReverseQR</h1>
+    <p class="subtitle">Secure File & Text Sharing</p>
+
+    <div id="error" class="error" style="display: none;"></div>
+
+    <div class="qr-section">
+      <img id="qrCode" alt="QR Code" style="max-width: 300px; padding: 15px; background: #f8f8f8; border-radius: 10px; display: block; margin: 0 auto 20px;" />
+
+      <div class="code-display">
+        <div class="code-label">QR URL:</div>
+        <div id="qrUrl" style="word-break: break-all; padding: 10px; background: #f0f0f0; border-radius: 5px; font-family: monospace; font-size: 12px; margin-bottom: 15px; color: #666;">Loading...</div>
+        
+        <div class="code-label">Share this code:</div>
+        <div class="pgp-code" id="pgpCode">Loading...</div>
+        <button class="copy-button" id="copyCodeBtn">Copy Code</button>
+      </div>
+    </div>
+    
+    <div id="keyHashDisplay" class="key-hash-display" style="display: none;"></div>
+
+    <div class="status">
+      <p>Waiting for sender to scan QR code...</p>
+      <div class="spinner"></div>
+      <div class="spinner"></div>
+      <div class="spinner"></div>
+    </div>
+
+    <div id="messagesSection" class="messages-section" style="display: none;">
+      <div class="messages-title">Received Messages</div>
+      <div id="messagesList"></div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+      <a href="/cookies.html">No cookie banner?</a>
+      <span class="separator">•</span>
+      <a href="/legal.html">Legal Disclaimer</a>
+      <span class="separator">•</span>
+      <a href="/privacy.html">Privacy Policy</a>
+      <span class="separator">•</span>
+      <a href="/faq.html">FAQ</a>
+      <span class="separator">•</span>
+      <a href="https://github.com/Arlo-real/reverseqr" target="_blank">View source code on github</a>
+  </footer>
+
+  <script src="receiver-script.js"></script>
+</body>
+</html>
